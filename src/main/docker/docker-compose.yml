@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+  highlights-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: highlights
+      POSTGRES_PASSWORD: highlights
+    volumes:
+      - './init.sql:/docker-entrypoint-initdb.d/init.sql'
+    ports:
+      - '5434:5432'
+    container_name: highlightsDB

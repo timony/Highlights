@@ -1,0 +1,13 @@
+POST http://localhost:8080/highlight/tmika
+Content-Type: application/json
+{
+    "startElement": "1",
+    "offset": 10,
+    "length": 20
+}
+
+###
+GET http://localhost:8080/highlight/tmika
+
+
+
