@@ -15,7 +15,7 @@ class HighlightSegmentTest extends Specification {
         def segment2 = new HighlightSegment(elementId2, offset2, length2)
 
         when:
-        def result = segment1.compareTo(segment2)
+        def result = segment1 <=> segment2
 
         then:
         result == expectedResult

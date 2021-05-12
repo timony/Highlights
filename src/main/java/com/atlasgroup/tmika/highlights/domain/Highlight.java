@@ -5,6 +5,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode(callSuper=false)
 public class Highlight extends AbstractAggregateRoot<Highlight> {
 
     @Id
@@ -77,11 +79,11 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
                             newSegment.merge(segment);
                             break;
                         case OVERLAPPING_LEFT:
-                            segment.setStart(newSegment.getEnd());
+                            segment.setStart(newSegment.getEnd() + 1);
                             result.add(segment);
                             break;
                         case OVERLAPPING_RIGHT:
-                            segment.setEnd(newSegment.getStart());
+                            segment.setEnd(newSegment.getStart() - 1);
                             result.add(segment);
                             break;
                         default:
