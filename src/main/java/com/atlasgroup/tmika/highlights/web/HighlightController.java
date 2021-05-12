@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value ="highlights")
 public class HighlightController {
 
     @Autowired
@@ -23,7 +22,7 @@ public class HighlightController {
         return "ok";
     }
 
-    @PostMapping(value = "/{username}/documents/{documentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{username}/documents/{documentId}/highlights", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Highlight addHighlight(@PathVariable String username, @PathVariable long documentId, @RequestBody HighlightDefinition definition) {
         return api.addHighlight(username, documentId, definition);
     }
