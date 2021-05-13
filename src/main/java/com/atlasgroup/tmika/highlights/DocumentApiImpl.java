@@ -3,13 +3,13 @@ package com.atlasgroup.tmika.highlights;
 import com.atlasgroup.tmika.highlights.api.DocumentApi;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -27,12 +27,15 @@ public class DocumentApiImpl implements DocumentApi {
      * @return document resource
      */
     @Override
-    public Resource getDocumentById(long documentId) throws IOException {
-        final Resource resource = context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId));
-        Document doc = Jsoup.parse(resource.getFile(), StandardCharsets.UTF_8.name());
+    public Document getDocumentById(long documentId) {
+        try {
+            final Resource document = context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId));
+            return Jsoup.parse(document.getFile(), StandardCharsets.UTF_8.name());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
 
-        final Element doc1 = doc.getElementById("doc");
-
-        return context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId));
     }
+
+
 }

@@ -19,11 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "highlight", uniqueConstraints = @UniqueConstraint(columnNames = {"documentId", "username"}))
@@ -60,14 +58,12 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
      * @return
      */
     public Highlight addSegment(HighlightSegment newSegment) {
-        final Map<Boolean, List<HighlightSegment>> split = segments.stream()
-                .collect(Collectors.partitioningBy(segment -> segment.getStartElementId().equals(newSegment.getStartElementId())));
 
         //Prevents duplicate elements
         Set<HighlightSegment> result = new TreeSet<>();
 
         var addNewSegment = new AtomicBoolean(true);
-        split.get(true).stream()
+        segments.stream()
                 .sorted()
                 .forEach(segment -> {
                     switch (segment.getInteraction(newSegment)) {
@@ -99,20 +95,13 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
             result.add(newSegment);
         }
 
-        this.segments = split.getOrDefault(false, new ArrayList<>());
-        this.segments.addAll(result);
+        this.segments = new ArrayList<>(result);
 
         return andEvent(
                 SegmentAddedEvent.builder()
                         .username(username)
                         .build()
         );
-    }
-
-    public List<HighlightSegment> getSegmentsByStartElementId(String startElementId) {
-        return segments.stream()
-                .filter(s -> s.getStartElementId().equals(startElementId))
-                .collect(Collectors.toList());
     }
 
 }

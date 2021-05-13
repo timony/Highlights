@@ -1,6 +1,5 @@
 package com.atlasgroup.tmika.highlights.web;
 
-import com.atlasgroup.tmika.highlights.domain.HighlightSegment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,15 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HighlightDefinition {
 
-    private String startElementId;
+    private String sourceDivId;
     private long offset;
-    private long length;
+    private String text;
 
-    public HighlightSegment toEntity() {
-        return HighlightSegment.builder()
-                .startElementId(startElementId)
-                .start(offset)
-                .end(offset + length)
-                .build();
-    }
 }

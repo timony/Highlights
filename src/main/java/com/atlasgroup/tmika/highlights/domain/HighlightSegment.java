@@ -18,17 +18,30 @@ import java.util.Comparator;
 public class HighlightSegment implements Comparable<HighlightSegment> {
 
     @NotEmpty
-    private String startElementId;
-
-    @NotEmpty
     private long start;
 
     @NotEmpty
     private long end;
 
+    @NotEmpty
+    private long divOffset;
+
+    @NotEmpty
+    private String divId;
+
     @JsonIgnore
     public long getLength() {
         return end - start;
+    }
+
+    @JsonIgnore
+    public long getDocumentStart() {
+        return divOffset + start;
+    }
+
+    @JsonIgnore
+    public long getDocumentEnd() {
+        return divOffset + end;
     }
 
     /**
@@ -38,7 +51,7 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
      * @return
      */
     public Interaction getInteraction(HighlightSegment other) {
-        if (other == null || !getStartElementId().equals(other.getStartElementId()) || start > other.end || end < other.start) {
+        if (other == null || start > other.end || end < other.start) {
             return Interaction.NONE;
         } else if (start == other.start && end == other.end) {
             return Interaction.EQUAL;
@@ -66,8 +79,7 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
 
     @Override
     public int compareTo(HighlightSegment other) {
-        return Comparator.comparing(HighlightSegment::getStartElementId)
-                .thenComparing(HighlightSegment::getStart)
+        return Comparator.comparing(HighlightSegment::getStart)
                 .thenComparing(HighlightSegment::getEnd)
                 .compare(this, other);
     }
