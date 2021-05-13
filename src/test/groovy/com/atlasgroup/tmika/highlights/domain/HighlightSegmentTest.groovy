@@ -11,8 +11,8 @@ class HighlightSegmentTest extends Specification {
     def 'should compare two segments'() {
         given:
 
-        def segment1 = new HighlightSegment(offset1, length1)
-        def segment2 = new HighlightSegment(offset2, length2)
+        def segment1 = new HighlightSegment(offset1, length1, 0, 'div01')
+        def segment2 = new HighlightSegment(offset2, length2, 0, 'div01')
 
         when:
         def result = segment1 <=> segment2
@@ -33,8 +33,8 @@ class HighlightSegmentTest extends Specification {
     @Unroll
     def '#firstStart:#firstEnd is interacting #secondStart:#secondEnd -> #expectedResult'() {
         given:
-        def first = new HighlightSegment(firstStart, firstEnd)
-        def second = new HighlightSegment(secondStart, secondEnd)
+        def first = new HighlightSegment(firstStart, firstEnd, 0, 'div01')
+        def second = new HighlightSegment(secondStart, secondEnd, 0, 'div01')
 
         when:
         def result = first.getInteraction(second)
@@ -44,7 +44,7 @@ class HighlightSegmentTest extends Specification {
 
         where:
         firstStart | firstEnd | secondStart | secondEnd || expectedResult
-        1          | 6        | 8           | 10        || NONE
+        1          | 6        | 7           | 10        || NONE
         8          | 10       | 1           | 6         || NONE
         1          | 6        | 1           | 6         || EQUAL
         3          | 4        | 1           | 6         || EATEN
@@ -62,8 +62,8 @@ class HighlightSegmentTest extends Specification {
     @Unroll
     def '#firstStart:#firstEnd merged with #secondStart:#secondEnd: #expectedStart:#expectedEnd'() {
         given:
-        def first = new HighlightSegment(firstStart, firstEnd)
-        def second = new HighlightSegment(secondStart, secondEnd)
+        def first = new HighlightSegment(firstStart, firstEnd, 0, 'div01')
+        def second = new HighlightSegment(secondStart, secondEnd, 0, 'div01')
 
         when:
         first.merge(second)

@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,12 +28,19 @@ public class DocumentApiImpl implements DocumentApi {
     @Override
     public Document getDocumentById(long documentId) {
         try {
-            final Resource document = context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId));
+            var document = context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId));
             return Jsoup.parse(document.getFile(), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
 
+    @Override
+    public long getElementOffset(long documentId, String elementId) {
+        var doc = getDocumentById(documentId);
+        var body = doc.body();
+        var sourceDiv = doc.getElementById(elementId);
+        return body.text().indexOf(sourceDiv.text());
     }
 
 

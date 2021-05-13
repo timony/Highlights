@@ -8,18 +8,18 @@ class HighlightTest extends Specification {
     @Unroll
     def 'should handle adding segment where #desc'() {
         given: 'Current state'
-        def currentState = currentSegments.collect { new HighlightSegment(it.key, it.value) }
+        def currentState = currentSegments.collect { new HighlightSegment(it.key, it.value, 0, 'div01') }
         def highlight = new Highlight(documentId: 100, username: 'user1', segments: currentState)
 
         and: 'Segment to add'
-        def newSegment = new HighlightSegment(start, end)
+        def newSegment = new HighlightSegment(start, end, 0, 'div01')
 
         when:
         def result = highlight.addSegment(newSegment)
 
         then:
         result.segments.size() == expectedSegments.size()
-        result.getSegments().sort() == expectedSegments.collect { new HighlightSegment(it.key, it.value) }
+        result.getSegments().sort() == expectedSegments.collect { new HighlightSegment(it.key, it.value, 0, 'div01') }
 
         where:
         currentSegments      | start | end || expectedSegments      | desc

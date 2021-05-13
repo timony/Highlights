@@ -34,21 +34,11 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
         return end - start;
     }
 
-    @JsonIgnore
-    public long getDocumentStart() {
-        return divOffset + start;
-    }
-
-    @JsonIgnore
-    public long getDocumentEnd() {
-        return divOffset + end;
-    }
-
     /**
      * Determines the type of interaction between two segments.
      * Null segment or segment with different element id is resolved as NONE interaction
-     * @param other
-     * @return
+     * @param other the other segment
+     * @return the interaction type
      */
     public Interaction getInteraction(HighlightSegment other) {
         if (other == null || start > other.end || end < other.start) {
