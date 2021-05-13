@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,14 +16,19 @@ public class HighlightController {
     @Autowired
     HighlightsApi api;
 
-    @GetMapping("/{username}")
-    public String getHighlightsByUser(@PathVariable String username) {
-        return "ok";
+    @GetMapping("/{username}/documents/{documentId}/highlights")
+    public Highlight getHighlightsByUser(@PathVariable String username, @PathVariable long documentId) {
+        return api.getHighlight(username, documentId);
     }
 
     @PostMapping(value = "/{username}/documents/{documentId}/highlights", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Highlight addHighlight(@PathVariable String username, @PathVariable long documentId, @RequestBody HighlightDefinition definition) {
         return api.addHighlight(username, documentId, definition);
+    }
+
+    @GetMapping(value = "/{username}/documents/{documentId}", produces = MediaType.TEXT_HTML_VALUE)
+    public String getDocument(@PathVariable String username, @PathVariable long documentId) {
+        return api.getHighlightedDocument(username, documentId);
     }
 
 }

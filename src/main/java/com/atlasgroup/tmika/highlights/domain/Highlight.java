@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -59,11 +60,14 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
      * @return
      */
     public Highlight addSegment(HighlightSegment newSegment) {
+        final Map<Boolean, List<HighlightSegment>> split = segments.stream()
+                .collect(Collectors.partitioningBy(segment -> segment.getStartElementId().equals(newSegment.getStartElementId())));
+
         //Prevents duplicate elements
         Set<HighlightSegment> result = new TreeSet<>();
 
         var addNewSegment = new AtomicBoolean(true);
-        getSegmentsByStartElementId(newSegment.getStartElementId()).stream()
+        split.get(true).stream()
                 .sorted()
                 .forEach(segment -> {
                     switch (segment.getInteraction(newSegment)) {
@@ -95,7 +99,8 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
             result.add(newSegment);
         }
 
-        this.segments = new ArrayList<>(result);
+        this.segments = split.getOrDefault(false, new ArrayList<>());
+        this.segments.addAll(result);
 
         return andEvent(
                 SegmentAddedEvent.builder()
