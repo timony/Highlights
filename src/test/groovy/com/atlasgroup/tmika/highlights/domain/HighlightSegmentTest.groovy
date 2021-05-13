@@ -32,10 +32,11 @@ class HighlightSegmentTest extends Specification {
     }
 
     @Unroll
-    def '[#firstStart:#firstEnd] is interacting [#secondStart:#secondEnd]: #expectedResult'() {
+    def 'elemenetA(#firstStart:#firstEnd) is interacting #secondId(#secondStart:#secondEnd) -> #expectedResult'() {
         given:
-        def first = new HighlightSegment('a', firstStart, firstEnd)
-        def second = new HighlightSegment('a', secondStart, secondEnd)
+        def first = new HighlightSegment('elementA', firstStart, firstEnd)
+        def second = Optional.ofNullable(secondId).map { new HighlightSegment(it, secondStart, secondEnd) }
+                .orElseGet { -> null }
 
         when:
         def result = first.getInteraction(second)
@@ -44,27 +45,29 @@ class HighlightSegmentTest extends Specification {
         result == expectedResult
 
         where:
-        firstStart | firstEnd | secondStart | secondEnd || expectedResult
-        1          | 6        | 8           | 10        || NONE
-        8          | 10       | 1           | 6         || NONE
-        1          | 6        | 1           | 6         || EQUAL
-        3          | 4        | 1           | 6         || EATEN
-        3          | 6        | 1           | 6         || EATEN
-        3          | 6        | 3           | 10        || EATEN
-        2          | 10       | 4           | 6         || ATE
-        2          | 10       | 4           | 10        || ATE
-        2          | 10       | 2           | 8         || ATE
-        3          | 6        | 1           | 3         || TOUCHING
-        3          | 6        | 6           | 10        || TOUCHING
-        3          | 6        | 2           | 4         || OVERLAPPING_LEFT
-        3          | 6        | 5           | 10        || OVERLAPPING_RIGHT
+        firstStart | firstEnd | secondStart | secondEnd | secondId   || expectedResult
+        1          | 6        | 8           | 10        | 'elementA' || NONE
+        8          | 10       | 1           | 6         | 'elementA' || NONE
+        1          | 6        | 1           | 6         | 'elementA' || EQUAL
+        3          | 4        | 1           | 6         | 'elementA' || EATEN
+        3          | 6        | 1           | 6         | 'elementA' || EATEN
+        3          | 6        | 3           | 10        | 'elementA' || EATEN
+        2          | 10       | 4           | 6         | 'elementA' || ATE
+        2          | 10       | 4           | 10        | 'elementA' || ATE
+        2          | 10       | 2           | 8         | 'elementA' || ATE
+        3          | 6        | 1           | 3         | 'elementA' || TOUCHING
+        3          | 6        | 6           | 10        | 'elementA' || TOUCHING
+        3          | 6        | 2           | 4         | 'elementA' || OVERLAPPING_LEFT
+        3          | 6        | 5           | 10        | 'elementA' || OVERLAPPING_RIGHT
+        3          | 6        | 5           | 10        | 'elementB' || NONE
+        3          | 6        | 5           | 10        | null       || NONE
     }
 
     @Unroll
     def '#firstStart:#firstEnd merged with #secondStart:#secondEnd: #expectedStart:#expectedEnd'() {
         given:
-        def first = new HighlightSegment('a', firstStart, firstEnd)
-        def second = new HighlightSegment('a', secondStart, secondEnd)
+        def first = new HighlightSegment('elementA', firstStart, firstEnd)
+        def second = new HighlightSegment('elementA', secondStart, secondEnd)
 
         when:
         first.merge(second)

@@ -68,9 +68,9 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
                 .forEach(segment -> {
                     switch (segment.getInteraction(newSegment)) {
                         case NONE:
-                        case EQUAL:
                             result.add(segment);
                             break;
+                        case EQUAL:
                         case ATE:
                             result.add(segment);
                             addNewSegment.set(false);

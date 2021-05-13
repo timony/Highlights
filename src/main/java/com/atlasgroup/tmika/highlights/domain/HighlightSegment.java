@@ -31,9 +31,14 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
         return end - start;
     }
 
+    /**
+     * Determines the type of interaction between two segments.
+     * Null segment or segment with different element id is resolved as NONE interaction
+     * @param other
+     * @return
+     */
     public Interaction getInteraction(HighlightSegment other) {
-        if (other == null) return Interaction.NONE;
-        if (start > other.end || end < other.start) {
+        if (other == null || !getStartElementId().equals(other.getStartElementId()) || start > other.end || end < other.start) {
             return Interaction.NONE;
         } else if (start == other.start && end == other.end) {
             return Interaction.EQUAL;
@@ -45,8 +50,10 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
             return Interaction.TOUCHING;
         } else if (start > other.start) {
             return Interaction.OVERLAPPING_LEFT;
-        } else {
+        } else if (end < other.end){
             return Interaction.OVERLAPPING_RIGHT;
+        } else {
+            throw new IllegalArgumentException(String.format("Segment interaction not recognized: %s and %s", this, other));
         }
     }
 
