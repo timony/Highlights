@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.util.Comparator;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -16,6 +18,10 @@ import java.util.Comparator;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HighlightSegment implements Comparable<HighlightSegment> {
+
+    @Id
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @NotEmpty
     private long start;
