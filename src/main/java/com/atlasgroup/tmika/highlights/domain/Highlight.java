@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "highlight", uniqueConstraints = @UniqueConstraint(columnNames = {"documentId", "username"}))
@@ -102,6 +103,12 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
                         .username(username)
                         .build()
         );
+    }
+
+    public List<HighlightSegment> getSegmentById(String id) {
+        return segments.stream()
+                .filter(segment -> segment.getDivId().equals(id))
+                .collect(Collectors.toList());
     }
 
 }

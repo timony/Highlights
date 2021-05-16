@@ -7,7 +7,6 @@ plugins {
 
 group = 'com.atlasgroup.tmika.highlights'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -37,6 +36,12 @@ dependencies {
 	testImplementation('org.spockframework:spock-spring:2.0-M3-groovy-3.0')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(11)
 	}
 }
 

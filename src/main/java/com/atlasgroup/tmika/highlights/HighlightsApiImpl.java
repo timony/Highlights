@@ -6,6 +6,7 @@ import com.atlasgroup.tmika.highlights.api.exception.NotFoundException;
 import com.atlasgroup.tmika.highlights.domain.Highlight;
 import com.atlasgroup.tmika.highlights.domain.HighlightRepository;
 import com.atlasgroup.tmika.highlights.domain.HighlightSegment;
+import com.atlasgroup.tmika.highlights.renderer.HighlightedHtmlRenderer;
 import com.atlasgroup.tmika.highlights.web.HighlightDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,12 @@ public class HighlightsApiImpl implements HighlightsApi {
 
     @Override
     public String getHighlightedDocument(String username, long documentId) {
-        var document = documentApi.getDocumentById(documentId);
-        return document.html();
+        return new HighlightedHtmlRenderer()
+                .withHighlightDefinition(repository.findByUsernameAndDocumentId(username, documentId)
+                        .orElse(new Highlight()))
+                .withDocumentTemplate(documentApi.getDocumentById(documentId))
+                .render();
     }
+
+
 }
