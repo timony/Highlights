@@ -25,15 +25,14 @@ public class HighlightedHtmlRenderer implements HtmlRenderer {
     }
 
     private void renderNode(org.dom4j.Element parentNode, Element fromNode) {
+        fromNode.attributes().asList().forEach(attribute -> parentNode.addAttribute(attribute.getKey(), attribute.getValue()));
         for (Node childNode : fromNode.childNodes()) {
             if (childNode == null) {
                 continue;
             } else if (childNode instanceof TextNode) {
                 renderTextNode(parentNode, (TextNode) childNode);
-
             } else if (childNode instanceof Element) {
                 final org.dom4j.Element subParent = parentNode.addElement(childNode.nodeName());
-                childNode.attributes().asList().forEach(att -> subParent.addAttribute(att.getKey(), att.getValue()));
                 renderNode(subParent, (Element) childNode);
             }
         }

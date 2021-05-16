@@ -4,7 +4,6 @@ import com.atlasgroup.tmika.highlights.api.DocumentApi;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
-import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -35,8 +34,8 @@ public class DocumentApiImpl implements DocumentApi {
         try (Reader reader = new InputStreamReader(context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId)).getInputStream())) {
             Document.OutputSettings settings = new Document.OutputSettings();
             settings.escapeMode(Entities.EscapeMode.xhtml);
-            final String cleanHtml = Jsoup.clean(FileCopyUtils.copyToString(reader), "", Whitelist.relaxed(), settings);
-            return Jsoup.parse(cleanHtml, StandardCharsets.UTF_8.name());
+            final String content = FileCopyUtils.copyToString(reader).replaceAll("\u00a0", "");
+            return Jsoup.parse(content, StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
