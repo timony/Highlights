@@ -21,7 +21,7 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
 
     @Id
     @Builder.Default
-    private UUID id = UUID.randomUUID();
+    private String id = UUID.randomUUID().toString();
 
     @NotEmpty
     private long start;
@@ -31,9 +31,6 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
 
     @NotEmpty
     private long divOffset;
-
-    @NotEmpty
-    private String divId;
 
     @JsonIgnore
     public long getLength() {
@@ -78,6 +75,10 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
         return Comparator.comparing(HighlightSegment::getStart)
                 .thenComparing(HighlightSegment::getEnd)
                 .compare(this, other);
+    }
+
+    public boolean contains(long index) {
+        return start <= index && end >= index;
     }
 
     public enum Interaction {

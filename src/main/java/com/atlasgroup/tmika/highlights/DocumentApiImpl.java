@@ -32,8 +32,6 @@ public class DocumentApiImpl implements DocumentApi {
     @Override
     public Document getDocumentById(long documentId) {
         try (Reader reader = new InputStreamReader(context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId)).getInputStream())) {
-            Document.OutputSettings settings = new Document.OutputSettings();
-            settings.escapeMode(Entities.EscapeMode.xhtml);
             final String content = FileCopyUtils.copyToString(reader).replaceAll("\u00a0", "");
             return Jsoup.parse(content, StandardCharsets.UTF_8.name());
         } catch (IOException e) {

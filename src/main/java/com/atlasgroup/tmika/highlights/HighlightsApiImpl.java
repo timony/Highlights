@@ -47,7 +47,6 @@ public class HighlightsApiImpl implements HighlightsApi {
                 .start(divOffset + definition.getOffset())
                 .end(divOffset + definition.getOffset() + definition.getText().length())
                 .divOffset(divOffset)
-                .divId(definition.getSourceDivId())
                 .build();
     }
 
