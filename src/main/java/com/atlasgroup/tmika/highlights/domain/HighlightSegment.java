@@ -29,9 +29,6 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
     @NotEmpty
     private long end;
 
-    @NotEmpty
-    private long divOffset;
-
     @JsonIgnore
     public long getLength() {
         return end - start;
