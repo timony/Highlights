@@ -1,6 +1,8 @@
 package com.atlasgroup.tmika.highlights;
 
 import com.atlasgroup.tmika.highlights.api.DocumentApi;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,8 @@ public class DocumentApiImpl implements DocumentApi {
      */
     @Override
     public Document getDocumentById(long documentId) {
-
-        try (Reader reader = new InputStreamReader(context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId)).getInputStream())) {
-            final var file = context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId)).getFile();
-            return getDocumentByFile(file);
+        try {
+            return getDocumentByFile(context.getResource(String.format(DOC_LOCATION_TEMPLATE, documentId)).getFile());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -45,13 +45,23 @@ public class DocumentApiImpl implements DocumentApi {
         var sb = new StringBuilder();
         try (Stream<String> stream = Files.lines(file.toPath(), StandardCharsets.UTF_8)) {
             stream.forEach(line -> sb.append(line
-                    .replace("\n", "")
-                    .replace("\r", "")));
+                    .replaceAll("[^\\x00-\\x7F]", "")
+                    .replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "")
+                    .replaceAll("\\p{C}", "")
+                    .replaceAll("\n", "")
+                    .replaceAll("\r", "")));
+
+            final org.dom4j.Document document = DocumentHelper.parseText(sb.toString());
+
+
+
             return Jsoup.parse(sb.toString(), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (DocumentException e) {
+            e.printStackTrace(); //TODO handle exception properly
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override
