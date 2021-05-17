@@ -51,16 +51,9 @@ public class DocumentApiImpl implements DocumentApi {
                     .replaceAll("\n", "")
                     .replaceAll("\r", "")));
 
-            final org.dom4j.Document document = DocumentHelper.parseText(sb.toString());
-
-
-
             return Jsoup.parse(sb.toString(), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        } catch (DocumentException e) {
-            e.printStackTrace(); //TODO handle exception properly
-            throw new RuntimeException(e);
         }
     }
 
