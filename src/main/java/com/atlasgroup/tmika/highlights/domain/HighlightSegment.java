@@ -7,21 +7,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Comparator;
-import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HighlightSegment implements Comparable<HighlightSegment> {
 
-    @Id
-    @Builder.Default
-    private String id = UUID.randomUUID().toString();
+    @Builder
+    public HighlightSegment(long start, long end) {
+        this.start = start;
+        this.end = end;
+        id = String.valueOf(String.format("Start: %d, End: %d", start, end).hashCode());
+    }
+
+    private String id;
 
     @NotEmpty
     private long start;
@@ -68,7 +71,7 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
     }
 
     @Override
-    public int compareTo(HighlightSegment other) {
+    public int compareTo(@NotNull HighlightSegment other) {
         return Comparator.comparing(HighlightSegment::getStart)
                 .thenComparing(HighlightSegment::getEnd)
                 .compare(this, other);

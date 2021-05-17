@@ -1,5 +1,6 @@
 package com.atlasgroup.tmika.highlights.renderer
 
+import com.atlasgroup.tmika.highlights.DocumentApiImpl
 import com.atlasgroup.tmika.highlights.domain.Highlight
 import com.atlasgroup.tmika.highlights.domain.HighlightSegment
 import org.jsoup.Jsoup
@@ -14,18 +15,17 @@ class HighlightedHtmlRendererTest extends Specification {
     def 'test highlighted html generation'() {
         given:
         def sourceFile = new File("src/test/resources/${source}")
+        def template = DocumentApiImpl.getDocumentByFile(sourceFile);
         def expectedFile = new File("src/test/resources/${expected}")
 
         def highlight = new Highlight(id: 1L)
         segments.each { segment ->
-            highlight.addSegment(new HighlightSegment(
-                    start: segment.key, end: segment.value
-            ))
+            highlight.addSegment(new HighlightSegment(segment.key, segment.value))
         }
 
         def underTest = new HighlightedHtmlRenderer()
                 .withHighlightDefinition(highlight)
-                .withDocumentTemplate(Jsoup.parse(sourceFile, StandardCharsets.UTF_8.name()))
+                .withDocumentTemplate(template)
 
         when:
         def result = underTest.render();
@@ -34,7 +34,11 @@ class HighlightedHtmlRendererTest extends Specification {
         result == expectedFile.text
 
         where:
-        source          | segments || expected
-        'simple01.html' | [0: 5]   || 'simple01result.html'
+        source                           | segments                         || expected
+        'simple01.html'                  | [0: 5]                           || 'simple01result01.html'
+        'simple01.html'                  | [1: 5]                           || 'simple01result02.html'
+        'simple01.html'                  | [1: 1000]                        || 'simple01result03.html'
+        'assignmentExample.html'         | [7: 9, 10: 60, 61: 62, 191: 221] || 'assignmentExampleResult01.html'
+        'assignmentExampleNoBreaks.html' | [7: 9, 10: 60, 61: 62, 191: 221] || 'assignmentExampleNoBreaksResult01.html'
     }
 }
