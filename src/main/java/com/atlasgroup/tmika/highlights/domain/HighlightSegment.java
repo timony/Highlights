@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
@@ -21,9 +22,10 @@ public class HighlightSegment implements Comparable<HighlightSegment> {
     public HighlightSegment(long start, long end) {
         this.start = start;
         this.end = end;
-        id = String.valueOf(String.format("Start: %d, End: %d", start, end).hashCode());
+        id = "s" + hashCode();  //nasty but out of scope of the assignment
     }
 
+    @EqualsAndHashCode.Exclude
     private String id;
 
     @NotEmpty

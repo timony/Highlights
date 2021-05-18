@@ -39,6 +39,5 @@ class HighlightedHtmlRendererTest extends Specification {
         'simple02.html'                  | [13: 48]                         || 'simple02result02.html'
         'assignmentExample.html'         | [7: 9, 10: 60, 61: 62, 191: 221] || 'assignmentExampleResult01.html'
         'assignmentExampleNoBreaks.html' | [7: 9, 10: 60, 61: 62, 191: 221] || 'assignmentExampleNoBreaksResult01.html'
-        'assignmentExampleNoBreaks.html' | [7: 9, 10: 60, 61: 62, 191: 221] || 'assignmentExampleNoBreaksResult01.html'
     }
 }

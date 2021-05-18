@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.Range;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -20,7 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -58,8 +56,8 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
      * A) not clear - condition 2. gets rid of bordering by merging but condition 4. introduces new one
      * B) not clear what to do with segment that is fully overlapped by other but shares the border
      *
-     * @param newSegment
-     * @return
+     * @param newSegment the segment to add
+     * @return Highlight with segment fitted in
      */
     public Highlight addSegment(HighlightSegment newSegment) {
 
@@ -109,9 +107,9 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
     }
 
     public List<HighlightSegment> getAffectedSegments(long start, long end) {
+        final var temporal = new HighlightSegment(start, end);
         return segments.stream()
-                .filter(segment -> (segment.getStart() >= start && segment.getStart() <= end) ||
-                        segment.getEnd() >= start && segment.getEnd() <= end)
+                .filter(segment -> segment.getInteraction(temporal) != HighlightSegment.Interaction.NONE)
                 .sorted()
                 .collect(Collectors.toList());
     }

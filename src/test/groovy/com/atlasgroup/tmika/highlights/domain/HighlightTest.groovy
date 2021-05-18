@@ -34,4 +34,33 @@ class HighlightTest extends Specification {
         [0: 5, 10: 15]       | 5     | 10  || [0: 15]               | 'new segment merges two unrelated segments'
 
     }
+
+    @Unroll
+    def 'should be in'() {
+        given:
+        def highlight = new Highlight()
+        highlight.segments = segments.collect { new HighlightSegment(start: it.key, end: it.value) }
+
+        when:
+        def result = highlight.getAffectedSegments(intervalStart, intervalEnd)
+
+        then:
+        result.sort() == expectedSegments.collect { new HighlightSegment(start: it.key, end: it.value) }
+
+        where:
+        segments        | intervalStart | intervalEnd || expectedSegments
+        [0: 10]         | 11            | 13          || []
+        [10: 20]        | 3             | 7           || []
+        [5: 10]         | 2             | 5           || [5: 10]
+        [5: 10, 12: 17] | 2             | 5           || [5: 10]
+        [5: 10, 12: 17] | 2             | 11          || [5: 10]
+        [5: 10, 12: 17] | 10            | 11          || [5: 10]
+        [5: 10, 12: 17] | 2             | 12          || [5: 10, 12: 17]
+        [5: 10, 12: 17] | 2             | 13          || [5: 10, 12: 17]
+        [5: 10, 12: 17] | 2             | 30          || [5: 10, 12: 17]
+        [5: 10, 12: 17] | 11            | 12          || [12: 17]
+        [5: 10, 12: 17] | 11            | 13          || [12: 17]
+        [5: 10, 12: 17] | 11            | 30          || [12: 17]
+        [5: 10, 12: 17] | 2             | 30          || [5: 10, 12: 17]
+    }
 }

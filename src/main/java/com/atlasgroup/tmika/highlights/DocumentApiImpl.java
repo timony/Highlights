@@ -1,8 +1,6 @@
 package com.atlasgroup.tmika.highlights;
 
 import com.atlasgroup.tmika.highlights.api.DocumentApi;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -48,8 +44,8 @@ public class DocumentApiImpl implements DocumentApi {
                     .replaceAll("[^\\x00-\\x7F]", "")
                     .replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "")
                     .replaceAll("\\p{C}", "")
-                    .replaceAll("\n", "")
-                    .replaceAll("\r", "")));
+                    .replace("\n", "")
+                    .replace("\r", "")));
 
             return Jsoup.parse(sb.toString(), StandardCharsets.UTF_8.name());
         } catch (IOException e) {

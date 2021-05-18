@@ -45,16 +45,22 @@ public class HighlightsApiImpl implements HighlightsApi {
         final long divOffset = documentApi.getElementOffset(documentId, definition.getSourceDivId());
         return HighlightSegment.builder()
                 .start(divOffset + definition.getOffset())
-                .end(divOffset + definition.getOffset() + definition.getText().length())
+                .end(divOffset + definition.getOffset() + definition.getText().length() - 1)
                 .build();
     }
 
     @Override
     public String getHighlightedDocument(String username, long documentId) {
+        return getHighlightedDocument(username, documentId, false);
+    }
+
+    @Override
+    public String getHighlightedDocument(String username, long documentId, boolean renderStyle) {
         return new HighlightedHtmlRenderer()
                 .withHighlightDefinition(repository.findByUsernameAndDocumentId(username, documentId)
                         .orElse(new Highlight()))
                 .withDocumentTemplate(documentApi.getDocumentById(documentId))
+                .renderRandomStyles(renderStyle)
                 .render();
     }
 

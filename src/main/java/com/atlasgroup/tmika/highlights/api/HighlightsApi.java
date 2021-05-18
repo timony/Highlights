@@ -17,4 +17,6 @@ public interface HighlightsApi {
     Highlight addHighlight(String username, long documentId, HighlightDefinition highlightDefinition);
 
     String getHighlightedDocument(String username,long documentId);
+
+    String getHighlightedDocument(String username, long documentId, boolean renderStyle);
 }
