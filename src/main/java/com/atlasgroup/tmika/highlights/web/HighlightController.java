@@ -23,12 +23,15 @@ public class HighlightController {
     }
 
     @PostMapping(value = "/{username}/documents/{documentId}/highlights", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Highlight addHighlight(@PathVariable String username, @PathVariable long documentId, @RequestBody HighlightDefinition definition) {
-        return api.addHighlight(username, documentId, definition);
+    public String addHighlight(@PathVariable String username, @PathVariable long documentId,
+                               @RequestParam(required = false) boolean renderStyle, @RequestBody HighlightDefinition definition) {
+        api.addHighlight(username, documentId, definition);
+        return api.getHighlightedDocument(username, documentId, renderStyle);
     }
 
     @GetMapping(value = "/{username}/documents/{documentId}", produces = MediaType.TEXT_HTML_VALUE)
-    public String getDocument(@PathVariable String username, @PathVariable long documentId, @RequestParam(required = false) boolean renderStyle) {
+    public String getDocument(@PathVariable String username, @PathVariable long documentId,
+                              @RequestParam(required = false) boolean renderStyle) {
         return api.getHighlightedDocument(username, documentId, renderStyle);
     }
 
