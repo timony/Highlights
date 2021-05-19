@@ -15,11 +15,16 @@
       "length": 10
       }
 
+## Test requests
+Example requests are stored in src/test/resources/testRequests.http
+To get the document with generated highlights visibile to the user, add
+** renderStyle=true** query parameter to the request
+
 ## Implementation
 
 ### Implementation notes
 The process is divided into two phases:
-* Storing new highlight by fitting it into existing hightlight for particular user and document
+* Storing new highlight by fitting it into existing highlight for particular user and document
 * Rendering html document for the particular user
 
 #### Document immutability
@@ -36,6 +41,9 @@ For the sake of simplicity, document CRUD is put aside, there are only two docum
 #### Whitespaces
 In the real world, the strong discussion would be hold how to handle whitespaces in HTML as what the user can see on th
 page does not need to fit into how the html is represented on the background. See the [limitations](#whitespace-handling)
+
+#### Integration tests
+Omitted for the sake of simplicity (btw. that's why code coverage rate is not on desired level)
 
 ### Limitations
 

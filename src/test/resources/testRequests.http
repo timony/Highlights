@@ -1,0 +1,83 @@
+// Get highlighted documents for the given user
+GET http://localhost:8080/highlights/tmika/documents/1?renderStyle=true
+Accept: text/html
+###
+
+//Get highlight definitions for the given user
+GET http://localhost:8080/highlights/tmika/documents/1/highlights
+Accept: application/json
+###
+
+//Highlight 01 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+    "sourceDivId": "doc",
+    "offset": 7,
+    "text": "welcome to the text"
+}
+###
+
+//Highlight 02 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+  "sourceDivId": "asdfge",
+  "offset": 7,
+  "text": "read first section"
+}
+###
+
+//Highlight 03 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+  "sourceDivId": "doc",
+  "offset": 10,
+  "text": "come to the text document. Please read first secti"
+}
+###
+
+//Highlight 04 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+  "sourceDivId": "34223asf",
+  "offset": 73,
+  "text": "section. This section contains"
+}
+###
+
+//Highlight 05 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+  "sourceDivId": "asdfge",
+  "offset": 27,
+  "text": "f WH"
+}
+###
+
+//Highlight 06 for document 1
+POST http://localhost:8080/highlights/jnovotny/documents/1/highlights
+Accept: text/html
+Content-Type: application/json
+
+{
+  "sourceDivId": "asdfge",
+  "offset": 27,
+  "text": "f WH0 chart"
+}
+###
+
+

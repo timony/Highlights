@@ -40,13 +40,7 @@ public class DocumentApiImpl implements DocumentApi {
     public static Document getDocumentByFile(File file) throws IOException {
         var sb = new StringBuilder();
         try (Stream<String> stream = Files.lines(file.toPath(), StandardCharsets.UTF_8)) {
-            stream.forEach(line -> sb.append(line
-                    .replaceAll("[^\\x00-\\x7F]", "")
-                    .replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "")
-                    .replaceAll("\\p{C}", "")
-                    .replace("\n", "")
-                    .replace("\r", "")));
-
+            stream.forEach(sb::append);
             return Jsoup.parse(sb.toString(), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
