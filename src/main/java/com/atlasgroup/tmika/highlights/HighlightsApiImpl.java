@@ -42,6 +42,7 @@ public class HighlightsApiImpl implements HighlightsApi {
     }
 
     private HighlightSegment getNewHighlightSegment(long documentId, HighlightDefinition definition) {
+        // Verify element contains desired text
         final long divOffset = documentApi.getElementOffset(documentId, definition.getSourceDivId());
         return HighlightSegment.builder()
                 .start(divOffset + definition.getOffset())

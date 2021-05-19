@@ -1,19 +1,19 @@
 package com.atlasgroup.tmika.highlights.renderer;
 
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class HexColor {
 
-    private static Random random = new Random();
+    public static final String HEX_TEMPLATE = "#%02x%02x%02x";
+    private static final int MIN = 100;
+    private static final int MAX = 255;
 
     private HexColor() {}
 
     public static String random() {
-        final String[] letters = "0123456789ABCDEF".split("");
-        return IntStream.range(0, 6)
-                .mapToObj(i -> letters[Math.round(random.nextFloat() * 15)])
-                .collect(Collectors.joining("", "#", ""));
+        final var localRandom = ThreadLocalRandom.current();
+        final var color = new Color(localRandom.nextInt(MIN, MAX), localRandom.nextInt(MIN, MAX), localRandom.nextInt(MIN, MAX));
+        return String.format(HEX_TEMPLATE, color.getRed(), color.getGreen(), color.getBlue());
     }
 }
