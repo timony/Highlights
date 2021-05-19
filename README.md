@@ -10,7 +10,7 @@ jdbc:postgresql://localhost:5434/highlights with username (pw) **highlights**
 Docker-compose src/main/docker/docker-compose.yml can be used to set up db instance
 
 ## Commands
-* Setup db: docker-compose -f ./src/main/docker/docker-compose.yml up -d
+* Setup db: `docker-compose -f ./src/main/docker/docker-compose.yml up -d`
 * Build  `./gradlew clean build`
 * Run `./gradlew bootRun`
 
