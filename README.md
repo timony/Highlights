@@ -7,7 +7,7 @@ Database needs to be installed. Default Spring profile expects
 jdbc:postgresql://localhost:5434/highlights with username (pw) **highlights**
 
 #### Docker compose
-Docker-compose src/main/docker/docker-compose.yml can be sued to set up db instance
+Docker-compose src/main/docker/docker-compose.yml can be used to set up db instance
 
 ## Commands
 * Build  `./gradlew clean build`
