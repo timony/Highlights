@@ -16,7 +16,29 @@
       }
 
 ## Implementation
+
+### Implementation notes
+The process is divided into two phases:
+* Storing new highlight by fitting it into existing hightlight for particular user and document
+* Rendering html document for the particular user
+
+#### Document immutability
+As I understood from the assignment, the document readable content cannot be changed, but the inline elements only. If
+this is not the case, my code would not work and would require modifications
+
+#### Span tag limitations
+Span tag, according its definition, must not contain any block tags (as div is), so that any highlight spanned across
+multiple divs needs to be split accordingly
+
+#### Document sources
+For the sake of simplicity, document CRUD is put aside, there are only two documents stored with the product with ids 1 and 2
+
+#### Whitespaces
+In the real world, the strong discussion would be hold how to handle whitespaces in HTML as what the user can see on th
+page does not need to fit into how the html is represented on the background. See the [limitations](#whitespace-handling)
+
 ### Limitations
+
 #### Whitespace handling
 The assignment is not clear in the matter of whitespaces (inline vs. block formatting) The user should not be aware
 of how many whitespaces, linebreaks or tabs are swallowed by the browser engine or if the text is inline or block

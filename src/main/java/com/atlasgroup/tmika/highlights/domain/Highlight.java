@@ -47,18 +47,6 @@ public class Highlight extends AbstractAggregateRoot<Highlight> {
     @Builder.Default
     private List<HighlightSegment> segments = new ArrayList<>();
 
-    /**
-     * 1) Can cross the boundaries
-     * 2) Bordering highlights merged into one
-     * 3) Fully overlapped highlight eaten
-     * 4) Partially overlapped shrinks the original
-     * <p>
-     * A) not clear - condition 2. gets rid of bordering by merging but condition 4. introduces new one
-     * B) not clear what to do with segment that is fully overlapped by other but shares the border
-     *
-     * @param newSegment the segment to add
-     * @return Highlight with segment fitted in
-     */
     public Highlight addSegment(HighlightSegment newSegment) {
 
         //Prevents duplicate elements
