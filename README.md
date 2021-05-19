@@ -1,6 +1,14 @@
 # Highlights homework
 [Assignment](https://github.com/agrpdev/homeworks/blob/master/algorithms.md)
 
+## Prereququisities
+### Database
+Database needs to be installed. Default Spring profile expects
+jdbc:postgresql://localhost:5434/highlights with username (pw) **highlights**
+
+#### Docker compose
+Docker-compose src/main/docker/docker-compose.yml can be sued to set up db instance
+
 ## Commands
 * Build  `./gradlew clean build`
 * Run `./gradlew bootRun`
