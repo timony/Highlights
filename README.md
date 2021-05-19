@@ -10,18 +10,9 @@ jdbc:postgresql://localhost:5434/highlights with username (pw) **highlights**
 Docker-compose src/main/docker/docker-compose.yml can be used to set up db instance
 
 ## Commands
+* Setup db: docker-compose -f ./src/main/docker/docker-compose.yml up -d
 * Build  `./gradlew clean build`
 * Run `./gradlew bootRun`
-* Requests
-  * http://localhost:8080/highlights/<username>/documents/<elementId>/highlights  
-    * headers  
-  Content-Type: application/json
-    * body  
-      {
-      "startElementId": "1",
-      "offset": 20,
-      "length": 10
-      }
 
 ## Test requests
 Example requests are stored in src/test/resources/testRequests.http
